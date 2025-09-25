@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="group_purchase_requisition_preparing" model="res.groups">
+            <field name="name">Preparing Group</field>
+        </record>
+
+        <record id="group_purchase_requisition_store" model="res.groups">
+            <field name="name">Store Department</field>
+        </record>
+
+        <record id="group_purchase_requisition_production" model="res.groups">
+            <field name="name">Production</field>
+        </record>
+
+        <record id="group_purchase_requisition_gm" model="res.groups">
+            <field name="name">General Manager</field>
+        </record>
+
+        <record id="group_purchase_requisition_purchase" model="res.groups">
+            <field name="name">Purchase Department</field>
+        </record>
+    </data>
+</odoo>

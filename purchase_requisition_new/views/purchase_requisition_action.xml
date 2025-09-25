@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_purchase_requisition" model="ir.actions.act_window">
+        <field name="name">Purchase Requisition</field>
+        <field name="res_model">purchase.requisition</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help">Create and manage purchase requisitions.</field>
+    </record>
+
+    <menuitem id="menu_purchase_requisition_action" name="Purchase Requisition"
+              parent="menu_purchase_requisition" action="action_purchase_requisition" sequence="1"/>
+</odoo>
