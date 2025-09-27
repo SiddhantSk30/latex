@@ -21,9 +21,10 @@
 #############################################################################
 
 {
-    'name': 'Odoo 16 Full Accounting Kit for Community',
+    'name': 'Accounting Kit',
     'version': '16.0.2.0.14',
     'category': 'Accounting',
+    'sequence': 1, 
     'live_test_url': 'https://www.youtube.com/watch?v=peAp2Tx_XIs',
     'summary': """Odoo 17 Accounting, Odoo 17 Accounting Reports, Odoo17 Accounting, Odoo Accounting, Odoo17 Financial Reports, Odoo17 Asset, Odoo17 Profit and Loss, PDC, Followups, Odoo17, Accounting, Odoo Apps, Reports""",
     'description': """
@@ -105,6 +106,7 @@
         'views/account_payment_view.xml',
         'data/account_pdc_data.xml',
         'views/report_payment_receipt_document_inherit.xml',
+        'report/custom_report_invoice.xml', #added lr date,lr no, transport in invoice report
     ],
     'assets': {
         'web.assets_backend': [

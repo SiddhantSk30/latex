@@ -1,0 +1,10 @@
+<odoo>
+    <template id="report_invoice_document_inherit_lr" inherit_id="account.report_invoice_document">
+        <!-- Place after invoice date -->
+        <xpath expr="//div[@id='informations']" position="after">
+            <p><strong>LR Date:</strong> <span t-field="o.lr_date"/></p>
+            <p><strong>LR Number:</strong> <span t-field="o.lr_number"/></p>
+            <p><strong>Transporter:</strong> <span t-field="o.transporter_id.name"/></p>
+        </xpath>
+    </template>
+</odoo>

@@ -47,7 +47,7 @@
                                 <tree editable="bottom">
                                     <field name="product_id"/>
                                     <field name="product_qty"/>
-                                    <field name="price_unit"/>
+                                    <field name="price_unit" attrs="{'invisible': [('parent.state', '!=', 'rfq')]}"/>
                                     <field name="notes"/>
                                 </tree>
                             </field>

@@ -16,5 +16,21 @@
             </xpath>
         </field>
     </record>
+    <!-- Add LR Date, LR Number, Transporter fields to account.move form view -->
+      <record id="account_move_form_inherited" model="ir.ui.view">
+        <field name="name">account.move.form.inherit.lr.transporter</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            
+            <!-- Place new fields after 'ref' -->
+            <xpath expr="//field[@name='ref']" position="after">
+                <field name="lr_date"/>
+                <field name="lr_number"/>
+                <field name="transporter_id"/>
+            </xpath>
+
+        </field>
+    </record>
 
 </odoo>
