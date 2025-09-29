@@ -22,38 +22,58 @@
             <form string="Purchase Requisition">
                 <header>
                     <field name="state" widget="statusbar" statusbar_visible="draft,store,production,gm,purchase,rfq"/>
+
+                    <!-- Store Approve -->
                     <button name="action_store_approve" string="Approve (Store)" type="object"
-                            attrs="{'invisible': [('state','!=','draft')]}"/>
+                            attrs="{'invisible': [('state','!=','draft')]}"
+                            groups="purchase_requisition_new.group_purchase_requisition_store,base.group_system"/>
+
+                    <!-- Production Approve -->
                     <button name="action_production_approve" string="Approve (Production)" type="object"
-                            attrs="{'invisible': [('state','!=','store')]}"/>
+                            attrs="{'invisible': [('state','!=','store')]}"
+                            groups="purchase_requisition_new.group_purchase_requisition_production,base.group_system"/>
+
+                    <!-- GM Approve -->
                     <button name="action_gm_approve" string="Approve (GM)" type="object"
-                            attrs="{'invisible': [('state','!=','production')]}"/>
+                            attrs="{'invisible': [('state','!=','production')]}"
+                            groups="purchase_requisition_new.group_purchase_requisition_gm,base.group_system"/>
+
+                    <!-- Purchase Approve -->
                     <button name="action_purchase_approve" string="Move to Purchase" type="object"
-                            attrs="{'invisible': [('state','!=','gm')]}"/>
+                            attrs="{'invisible': [('state','!=','gm')]}"
+                            groups="purchase_requisition_new.group_purchase_requisition_purchase,base.group_system"/>
+
+                    <!-- Create RFQ -->
                     <button name="action_rfq" string="Create RFQ" type="object"
-                            attrs="{'invisible': [('state','!=','purchase')]}"/>
+                            attrs="{'invisible': [('state','!=','purchase')]}"
+                            groups="purchase_requisition_new.group_purchase_requisition_purchase,base.group_system"/>
                 </header>
 
                 <sheet>
                     <group>
                         <field name="name" readonly="1"/>
-                        <field name="partner_id"/>
-                        <field name="date_order"/>
+                        <field name="partner_id"
+                               attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="date_order"
+                               attrs="{'readonly':[('state','!=','draft')]}"/>
                         <field name="purchase_order_id" readonly="1"/>
                     </group>
+
                     <notebook>
                         <page string="Requisition Lines">
-                            <field name="line_ids">
+                            <field name="line_ids"
+                                   attrs="{'readonly':[('state','!=','draft')]}">
                                 <tree editable="bottom">
-                                    <field name="product_id"/>
-                                    <field name="product_qty"/>
-                                    <field name="price_unit" attrs="{'invisible': [('parent.state', '!=', 'rfq')]}"/>
-                                    <field name="notes"/>
+                                    <field name="product_id" attrs="{'readonly':[('parent.state','!=','draft')]}"/>
+                                    <field name="product_qty" attrs="{'readonly':[('parent.state','!=','draft')]}"/>
+                                    <field name="price_unit" attrs="{'invisible':[('parent.state','!=','rfq')]}"/>
+                                    <field name="notes" attrs="{'readonly':[('parent.state','!=','draft')]}"/>
                                 </tree>
                             </field>
                         </page>
+
                         <page string="Notes">
-                            <field name="notes"/>
+                            <field name="notes" attrs="{'readonly':[('state','!=','draft')]}"/>
                         </page>
                     </notebook>
                 </sheet>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Preparing Group can only see requisitions in draft -->
+    <record id="rule_preparing_group_requisition" model="ir.rule">
+        <field name="name">Preparing Group Own Requisitions</field>
+        <field name="model_id" ref="model_purchase_requisition"/>
+        <field name="groups" eval="[(4, ref('purchase_requisition_new.group_purchase_requisition_preparing'))]"/>
+        <field name="domain_force">[('state','=','draft')]</field>
+    </record>
+
+    <!-- Store Department -->
+    <record id="rule_store_group_requisition" model="ir.rule">
+        <field name="name">Store Dept Own Requisitions</field>
+        <field name="model_id" ref="model_purchase_requisition"/>
+        <field name="groups" eval="[(4, ref('purchase_requisition_new.group_purchase_requisition_store'))]"/>
+        <field name="domain_force">[('state','=','store')]</field>
+    </record>
+
+    <!-- Production Department -->
+    <record id="rule_production_group_requisition" model="ir.rule">
+        <field name="name">Production Dept Own Requisitions</field>
+        <field name="model_id" ref="model_purchase_requisition"/>
+        <field name="groups" eval="[(4, ref('purchase_requisition_new.group_purchase_requisition_production'))]"/>
+        <field name="domain_force">[('state','=','production')]</field>
+    </record>
+
+    <!-- General Manager -->
+    <record id="rule_gm_group_requisition" model="ir.rule">
+        <field name="name">GM Own Requisitions</field>
+        <field name="model_id" ref="model_purchase_requisition"/>
+        <field name="groups" eval="[(4, ref('purchase_requisition_new.group_purchase_requisition_gm'))]"/>
+        <field name="domain_force">[('state','=','gm')]</field>
+    </record>
+
+    <!-- Purchase Department -->
+    <record id="rule_purchase_group_requisition" model="ir.rule">
+        <field name="name">Purchase Dept Own Requisitions</field>
+        <field name="model_id" ref="model_purchase_requisition"/>
+        <field name="groups" eval="[(4, ref('purchase_requisition_new.group_purchase_requisition_purchase'))]"/>
+        <field name="domain_force">[('state','in',['purchase','rfq'])]</field>
+    </record>
+</odoo>

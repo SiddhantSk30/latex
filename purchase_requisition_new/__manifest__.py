@@ -8,6 +8,7 @@
     'depends': ['base', 'mail', 'purchase', 'product'],
     'data': [
         'security/groups.xml',
+        'security/purchase_requisition_rules.xml',   # added rules here
         'data/sequence.xml',
         'views/purchase_requisition_menu.xml',
         'views/purchase_requisition_action.xml',

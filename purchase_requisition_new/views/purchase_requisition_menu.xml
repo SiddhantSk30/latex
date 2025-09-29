@@ -1,6 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Root Purchase Menu (everyone in Purchases) -->
     <menuitem id="menu_purchase_root" name="Purchases" sequence="1"/>
-    <menuitem id="menu_purchase_order" name="Orders" parent="menu_purchase_root" sequence="1"/>
-    <menuitem id="menu_purchase_requisition" name="Purchase Requisition" parent="purchase.menu_procurement_management" sequence="-1"/>
+
+    <!-- Orders submenu (only Purchase Dept + Admin) -->
+    <menuitem id="menu_purchase_order"
+              name="Orders"
+              parent="menu_purchase_root"
+              sequence="1"
+              groups="purchase_requisition_new.group_purchase_requisition_purchase,base.group_system"/>
+
+    <!-- Restrict RFQ -->
+    <menuitem id="menu_purchase_rfq"
+              name="Request for Quotation"
+              parent="menu_purchase_order"
+              action="purchase.purchase_rfq"
+              groups="purchase_requisition_new.group_purchase_requisition_purchase,base.group_system"/>
+
+    <!-- Restrict Purchase Orders -->
+    <menuitem id="menu_purchase_orders"
+              name="Purchase Orders"
+              parent="menu_purchase_order"
+              action="purchase.purchase_form_action"
+              groups="purchase_requisition_new.group_purchase_requisition_purchase,base.group_system"/>
+
+    <!-- Custom Purchase Requisition (visible to all requisition groups + Admin) -->
+    <menuitem id="menu_purchase_requisition"
+              name="Purchase Requisition"
+              parent="purchase.menu_procurement_management"
+              sequence="-1"
+              action="purchase_requisition_new.action_purchase_requisition"
+              groups="purchase_requisition_new.group_purchase_requisition_preparing,
+                      purchase_requisition_new.group_purchase_requisition_store,
+                      purchase_requisition_new.group_purchase_requisition_production,
+                      purchase_requisition_new.group_purchase_requisition_gm,
+                      purchase_requisition_new.group_purchase_requisition_purchase,
+                      base.group_system"/>
 </odoo>

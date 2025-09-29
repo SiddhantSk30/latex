@@ -6,7 +6,4 @@
         <field name="view_mode">tree,form</field>
         <field name="help">Create and manage purchase requisitions.</field>
     </record>
-
-    <!-- <menuitem id="menu_purchase_requisition_action" name="Purchase Requisition"
-              parent="menu_purchase_requisition" action="action_purchase_requisition" sequence="1"/> -->
 </odoo>
