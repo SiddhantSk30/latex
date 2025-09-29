@@ -34,40 +34,76 @@ class PurchaseRequisition(models.Model):
 
     @api.model
     def create(self, vals):
+        # sequence
         if vals.get('name', _('New')) == _('New'):
             seq = self.env['ir.sequence'].sudo().next_by_code('purchase.requisition') or _('New')
             vals['name'] = seq
         return super().create(vals)
 
+    # -------------------------
+    # Security helpers
+    # -------------------------
+    def _ensure_admin_or_group(self, group_xmlid):
+        """Raise if current user is neither admin (base.group_system) nor member of group_xmlid"""
+        # base.group_system is Odoo admin group
+        if not (self.env.user.has_group(group_xmlid) or self.env.user.has_group('base.group_system')):
+            raise UserError(_('You are not allowed to perform this approval.'))
+
+    def _ensure_state(self, rec, expected_state):
+        """Raise if record isn't in expected_state"""
+        if rec.state != expected_state:
+            raise UserError(_(
+                'Action not allowed. Requisition must be in state "%s" to perform this action.'
+            ) % dict(self._fields['state'].selection).get(expected_state, expected_state))
+
+    # -------------------------
+    # Approval methods
+    # -------------------------
     def action_store_approve(self):
+        """Called by Preparing group to move draft -> store"""
         for rec in self:
-            rec.state = 'store'
+            # require correct current state
+            rec._ensure_state(rec, 'draft')
+        # ensure user is Preparing group member or admin
+        self._ensure_admin_or_group('purchase_requisition_new.group_purchase_requisition_preparing')
+        # move
+        self.write({'state': 'store'})
 
     def action_production_approve(self):
+        """Called by Store group to move store -> production"""
         for rec in self:
-            if rec.state != 'store':
-                raise UserError(_('Requisition must be approved by Store before Production.'))
-            rec.state = 'production'
+            rec._ensure_state(rec, 'store')
+        self._ensure_admin_or_group('purchase_requisition_new.group_purchase_requisition_store')
+        self.write({'state': 'production'})
 
     def action_gm_approve(self):
+        """Called by Production group to move production -> gm"""
         for rec in self:
-            if rec.state != 'production':
-                raise UserError(_('Requisition must be approved by Production before GM approval.'))
-            rec.state = 'gm'
+            rec._ensure_state(rec, 'production')
+        self._ensure_admin_or_group('purchase_requisition_new.group_purchase_requisition_production')
+        self.write({'state': 'gm'})
 
     def action_purchase_approve(self):
+        """Called by GM group to move gm -> purchase"""
         for rec in self:
-            if rec.state != 'gm':
-                raise UserError(_('Requisition must be approved by GM before Purchase department.'))
-            rec.state = 'purchase'
+            rec._ensure_state(rec, 'gm')
+        self._ensure_admin_or_group('purchase_requisition_new.group_purchase_requisition_gm')
+        self.write({'state': 'purchase'})
 
     def action_rfq(self):
-        """Create a purchase.order (RFQ) from this requisition."""
+        """Create a purchase.order (RFQ) from this requisition.
+           Only Purchase Department (or admin) and only when state == 'purchase'
+        """
         PurchaseOrder = self.env['purchase.order']
         PurchaseLine = self.env['purchase.order.line']
+
+        # backend state and group checks
         for rec in self:
-            if rec.state != 'purchase':
-                raise UserError(_('Only requisitions at Purchase Department stage can be converted to RFQ.'))
+            rec._ensure_state(rec, 'purchase')
+
+        self._ensure_admin_or_group('purchase_requisition_new.group_purchase_requisition_purchase')
+
+        for rec in self:
             if rec.purchase_order_id:
                 # already created
                 continue

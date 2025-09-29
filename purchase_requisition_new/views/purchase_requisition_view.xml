@@ -21,48 +21,60 @@
         <field name="arch" type="xml">
             <form string="Purchase Requisition">
                 <header>
-                    <field name="state" widget="statusbar" statusbar_visible="draft,store,production,gm,purchase,rfq"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,store,production,gm,purchase,rfq"/>
 
-                    <!-- Store Approve -->
-                    <button name="action_store_approve" string="Approve (Store)" type="object"
-                            attrs="{'invisible': [('state','!=','draft')]}"
-                            groups="purchase_requisition_new.group_purchase_requisition_store,base.group_system"/>
+                    <!-- Preparing Group: visible only when draft and only to Preparing group (or admin) -->
+                    <button name="action_store_approve"
+                            type="object"
+                            string="Approve (Store)"
+                            class="btn-primary"
+                            groups="purchase_requisition_new.group_purchase_requisition_preparing,base.group_system"
+                            attrs="{'invisible': [('state','!=','draft')]}"/>
 
-                    <!-- Production Approve -->
-                    <button name="action_production_approve" string="Approve (Production)" type="object"
-                            attrs="{'invisible': [('state','!=','store')]}"
-                            groups="purchase_requisition_new.group_purchase_requisition_production,base.group_system"/>
+                    <!-- Store Department -->
+                    <button name="action_production_approve"
+                            type="object"
+                            string="Approve (Production)"
+                            class="btn-secondary"
+                            groups="purchase_requisition_new.group_purchase_requisition_store,base.group_system"
+                            attrs="{'invisible': [('state','!=','store')]}"/>
 
-                    <!-- GM Approve -->
-                    <button name="action_gm_approve" string="Approve (GM)" type="object"
-                            attrs="{'invisible': [('state','!=','production')]}"
-                            groups="purchase_requisition_new.group_purchase_requisition_gm,base.group_system"/>
+                    <!-- Production -->
+                    <button name="action_gm_approve"
+                            type="object"
+                            string="Approve (GM)"
+                            class="btn-info"
+                            groups="purchase_requisition_new.group_purchase_requisition_production,base.group_system"
+                            attrs="{'invisible': [('state','!=','production')]}"/>
 
-                    <!-- Purchase Approve -->
-                    <button name="action_purchase_approve" string="Move to Purchase" type="object"
-                            attrs="{'invisible': [('state','!=','gm')]}"
-                            groups="purchase_requisition_new.group_purchase_requisition_purchase,base.group_system"/>
+                    <!-- General Manager -->
+                    <button name="action_purchase_approve"
+                            type="object"
+                            string="Move to Purchase"
+                            class="btn-warning"
+                            groups="purchase_requisition_new.group_purchase_requisition_gm,base.group_system"
+                            attrs="{'invisible': [('state','!=','gm')]}"/>
 
-                    <!-- Create RFQ -->
-                    <button name="action_rfq" string="Create RFQ" type="object"
-                            attrs="{'invisible': [('state','!=','purchase')]}"
-                            groups="purchase_requisition_new.group_purchase_requisition_purchase,base.group_system"/>
+                    <!-- Purchase Department -->
+                    <button name="action_rfq"
+                            type="object"
+                            string="Create RFQ"
+                            class="btn-success"
+                            groups="purchase_requisition_new.group_purchase_requisition_purchase,base.group_system"
+                            attrs="{'invisible': [('state','!=','purchase')]}"/>
                 </header>
 
                 <sheet>
                     <group>
                         <field name="name" readonly="1"/>
-                        <field name="partner_id"
-                               attrs="{'readonly':[('state','!=','draft')]}"/>
-                        <field name="date_order"
-                               attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="partner_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        <field name="date_order" attrs="{'readonly':[('state','!=','draft')]}"/>
                         <field name="purchase_order_id" readonly="1"/>
                     </group>
-
                     <notebook>
                         <page string="Requisition Lines">
-                            <field name="line_ids"
-                                   attrs="{'readonly':[('state','!=','draft')]}">
+                            <field name="line_ids" attrs="{'readonly':[('state','!=','draft')]}">
                                 <tree editable="bottom">
                                     <field name="product_id" attrs="{'readonly':[('parent.state','!=','draft')]}"/>
                                     <field name="product_qty" attrs="{'readonly':[('parent.state','!=','draft')]}"/>
@@ -71,7 +83,6 @@
                                 </tree>
                             </field>
                         </page>
-
                         <page string="Notes">
                             <field name="notes" attrs="{'readonly':[('state','!=','draft')]}"/>
                         </page>
