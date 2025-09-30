@@ -27,13 +27,9 @@
     <!-- Custom Purchase Requisition (visible to all requisition groups + Admin) -->
     <menuitem id="menu_purchase_requisition"
               name="Purchase Requisition"
-              parent="purchase.menu_procurement_management"
+              parent="menu_purchase_root"
               sequence="-1"
               action="purchase_requisition_new.action_purchase_requisition"
-              groups="purchase_requisition_new.group_purchase_requisition_preparing,
-                      purchase_requisition_new.group_purchase_requisition_store,
-                      purchase_requisition_new.group_purchase_requisition_production,
-                      purchase_requisition_new.group_purchase_requisition_gm,
-                      purchase_requisition_new.group_purchase_requisition_purchase,
-                      base.group_system"/>
+              groups="purchase_requisition_new.group_purchase_requisition_preparing,purchase_requisition_new.group_purchase_requisition_store,purchase_requisition_new.group_purchase_requisition_production,purchase_requisition_new.group_purchase_requisition_gm,purchase_requisition_new.group_purchase_requisition_purchase,base.group_system"/>
+
 </odoo>
